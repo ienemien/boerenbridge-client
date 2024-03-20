@@ -1,0 +1,13 @@
+:host {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+
+  & .bottom-nav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+  }
+}
+
