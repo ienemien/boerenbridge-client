@@ -1,12 +1,43 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatIconModule} from "@angular/material/icon";
+import {MatInputModule} from "@angular/material/input";
+import {FormArray, FormBuilder, ReactiveFormsModule} from "@angular/forms";
+import {MatButton, MatIconButton} from "@angular/material/button";
+import {NgForOf} from "@angular/common";
+import {GameService} from "../../services/game.service";
 
 @Component({
   selector: 'bbs-new-game',
   standalone: true,
-  imports: [],
+  imports: [
+    MatFormFieldModule, MatInputModule, MatIconModule,
+    ReactiveFormsModule, MatIconButton, NgForOf, MatButton,
+  ],
   templateUrl: './new-game.component.html',
   styleUrl: './new-game.component.scss'
 })
 export class NewGameComponent {
+  userForm = this.formBuilder.group({
+    users: this.formBuilder.array([this.formBuilder.control('')])
+  });
 
+  get users() {
+    return this.userForm.get('users') as FormArray;
+  }
+
+  constructor(private formBuilder: FormBuilder, private gameService: GameService) {
+  }
+
+  addUser() {
+    this.users.push(this.formBuilder.control(''));
+  }
+
+  onSubmit() {
+    this.gameService.createGame(this.users.value)
+      .subscribe((gameId) => {
+        console.log(gameId);
+        //todo: navigate to next step
+      })
+  }
 }

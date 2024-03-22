@@ -1,0 +1,9 @@
+.users-fieldset {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  & .add-user-button {
+    align-self: flex-end;
+  }
+}
