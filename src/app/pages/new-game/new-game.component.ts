@@ -6,6 +6,7 @@ import {FormArray, FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {NgForOf} from "@angular/common";
 import {GameService} from "../../services/game.service";
+import {Router, RouterModule} from "@angular/router";
 
 @Component({
   selector: 'bbs-new-game',
@@ -13,6 +14,7 @@ import {GameService} from "../../services/game.service";
   imports: [
     MatFormFieldModule, MatInputModule, MatIconModule,
     ReactiveFormsModule, MatIconButton, NgForOf, MatButton,
+    RouterModule,
   ],
   templateUrl: './new-game.component.html',
   styleUrl: './new-game.component.scss'
@@ -26,7 +28,7 @@ export class NewGameComponent {
     return this.userForm.get('users') as FormArray;
   }
 
-  constructor(private formBuilder: FormBuilder, private gameService: GameService) {
+  constructor(private formBuilder: FormBuilder, private gameService: GameService, private router: Router) {
   }
 
   addUser() {
@@ -36,8 +38,7 @@ export class NewGameComponent {
   onSubmit() {
     this.gameService.createGame(this.users.value)
       .subscribe((gameId) => {
-        console.log(gameId);
-        //todo: navigate to next step
+        this.router.navigate(['/choose-tricks'],  { queryParams: { game: gameId, round: 1 } });
       })
   }
 }
