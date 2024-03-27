@@ -1,6 +1,6 @@
 <form [formGroup]="chooseTricksForm" (ngSubmit)="onSubmit()" class="tricks-fieldset">
   <ng-container formArrayName="tricks">
-    <h2>Kies aantal slagen</h2>
+    <h2>Kies aantal slagen, max. {{ round?.numberOfCards}}</h2>
     <ng-container *ngFor="let trickForm of tricks.controls; let i=index">
       <ng-container [formGroupName]="i">
         <mat-form-field appearance="outline">
@@ -9,10 +9,18 @@
             {{ trickForm.get('playerName')?.value }}
           </mat-label>
           <input type="number" matInput formControlName="tricks" placeholder="0">
+          @if (trickForm.get('tricks')?.hasError('max')) {
+            <mat-error>Aantal gekozen slagen mag niet hoger zijn dan aantal kaarten van deze ronde: {{round?.numberOfCards}}</mat-error>
+          }
+          @if (trickForm.get('tricks')?.hasError('min')) {
+            <mat-error>Aantal gekozen slagen moet 0 of meer zijn</mat-error>
+          }
         </mat-form-field>
       </ng-container>
     </ng-container>
-
+    @if (chooseTricksForm?.errors?.['nrChosenInvalid']) {
+      <mat-error>Totaal van gekozen slagen mag niet gelijk zijn aan het aantal kaarten van deze ronde: {{ round?.numberOfCards }}</mat-error>
+    }
     <button mat-button color="primary" type="submit">Save</button>
   </ng-container>
 </form>
