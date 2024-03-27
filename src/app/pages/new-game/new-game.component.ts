@@ -21,22 +21,22 @@ import {Router, RouterModule} from "@angular/router";
 })
 export class NewGameComponent {
   userForm = this.formBuilder.group({
-    users: this.formBuilder.array([this.formBuilder.control('')])
+    players: this.formBuilder.array([this.formBuilder.control('')])
   });
 
-  get users() {
-    return this.userForm.get('users') as FormArray;
+  get players() {
+    return this.userForm.get('players') as FormArray;
   }
 
   constructor(private formBuilder: FormBuilder, private gameService: GameService, private router: Router) {
   }
 
-  addUser() {
-    this.users.push(this.formBuilder.control(''));
+  addPlayer() {
+    this.players.push(this.formBuilder.control(''));
   }
 
   onSubmit() {
-    this.gameService.createGame(this.users.value)
+    this.gameService.createGame(this.players.value)
       .subscribe((gameId) => {
         this.router.navigate(['/choose-tricks'],  { queryParams: { game: gameId, round: 1 } });
       })

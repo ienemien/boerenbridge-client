@@ -1,1 +1,18 @@
-<p>choose-tricks works!</p>
+<form [formGroup]="chooseTricksForm" (ngSubmit)="onSubmit()" class="tricks-fieldset">
+  <ng-container formArrayName="tricks">
+    <h2>Kies aantal slagen</h2>
+    <ng-container *ngFor="let trickForm of tricks.controls; let i=index">
+      <ng-container [formGroupName]="i">
+        <mat-form-field appearance="outline">
+          <mat-icon *ngIf="trickForm.get('playerId')?.value === dealerId" matPrefix>style</mat-icon>
+          <mat-label>
+            {{ trickForm.get('playerName')?.value }}
+          </mat-label>
+          <input type="number" matInput formControlName="tricks" placeholder="0">
+        </mat-form-field>
+      </ng-container>
+    </ng-container>
+
+    <button mat-button color="primary" type="submit">Save</button>
+  </ng-container>
+</form>
